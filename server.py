@@ -1,5 +1,6 @@
 import socket
 import alat
+from menu import *
 
 PORT = 661
 
