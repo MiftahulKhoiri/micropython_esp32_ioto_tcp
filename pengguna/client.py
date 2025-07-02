@@ -23,6 +23,7 @@ def main():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ip, port))
         while True:
+            clear_screen()
             menu = s.recv(1024).decode()
             print(menu)
             pilihan = input("Masukkan pilihan nomor: ").strip()
