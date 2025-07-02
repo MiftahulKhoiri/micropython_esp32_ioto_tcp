@@ -1,4 +1,20 @@
 import socket
+import os
+
+def clear_screen():
+    # Cek jika berjalan di MicroPython (umumnya tidak ada os.name)
+    try:
+        os_name = os.name
+    except AttributeError:
+        os_name = None
+
+    if os_name == 'nt':
+        os.system('cls')
+    elif os_name == 'posix':
+        os.system('clear')
+    else:
+        # fallback, print banyak baris kosong
+        print('\n' * 100)
 
 def main():
     ip = input("Masukkan alamat IP ESP32: ").strip()
