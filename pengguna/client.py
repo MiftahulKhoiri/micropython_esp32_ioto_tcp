@@ -1,5 +1,14 @@
 import socket
 import os
+import time
+import datetime
+
+LOG_FILE = "client_log.txt"
+
+def tulis_log(pesan):
+    waktu = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a") as f:
+        f.write(f"[{waktu}] {pesan}\n")
 
 def clear_screen():
     try:
@@ -17,7 +26,6 @@ def clear_screen():
 def input_ip():
     while True:
         ip = input("Masukkan alamat IP ESP32: ").strip()
-        # Cek format IP sederhana
         parts = ip.split('.')
         if len(parts) == 4 and all(part.isdigit() and 0 <= int(part) <= 255 for part in parts):
             return ip
@@ -35,40 +43,64 @@ def input_port():
         else:
             print("Port harus berupa angka! Silakan coba lagi.")
 
-def main():
+def koneksi_ke_server(ip, port):
     while True:
-        ip = input_ip()
-        port = input_port()
         try:
+            tulis_log(f"Mencoba koneksi ke {ip}:{port}")
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(5)  # timeout 5 detik
+            s.settimeout(5)
             s.connect((ip, port))
             s.settimeout(None)
-            break
+            tulis_log(f"Berhasil koneksi ke {ip}:{port}")
+            print(f"Berhasil koneksi ke {ip}:{port}")
+            return s
         except Exception as e:
+            tulis_log(f"Gagal koneksi ke {ip}:{port}. Error: {e}")
             print(f"Gagal koneksi ke {ip}:{port}. Error: {e}")
-            print("Silakan masukkan ulang alamat IP dan port!\n")
+            print("Akan mencoba ulang dalam 5 detik...")
+            time.sleep(5)
+
+def main():
+    ip = input_ip()
+    port = input_port()
+    s = koneksi_ke_server(ip, port)
 
     while True:
         clear_screen()
         try:
             menu = s.recv(1024).decode()
             print(menu)
+            tulis_log(f"Menu diterima:\n{menu}")
             pilihan = input("Masukkan pilihan nomor: ").strip()
             s.sendall(pilihan.encode())
+            tulis_log(f"Pilihan dikirim: {pilihan}")
             balasan = s.recv(1024).decode()
             print("Balasan dari server:", balasan)
-            if pilihan == '5':  # shutdown
+            tulis_log(f"Balasan diterima: {balasan.strip()}")
+            if pilihan == '8':
                 print("ESP32 dimatikan. Program client keluar.")
+                tulis_log("Client keluar karena shutdown (8).")
                 break
-            elif pilihan == '0':  # keluar
+            elif pilihan == '0':
                 print("Keluar dari program client.")
+                tulis_log("Client keluar karena pilihan (0).")
                 break
             input("Tekan Enter untuk melanjutkan...")
         except Exception as e:
-            print("Terjadi error komunikasi:", e)
-            break
-    s.close()
+            tulis_log(f"Error komunikasi: {e}")
+            print("Koneksi ke server terputus atau terjadi error:", e)
+            print("Mencoba reconnect ke server...")
+            try:
+                s.close()
+            except:
+                pass
+            s = koneksi_ke_server(ip, port)
+
+    try:
+        s.close()
+    except:
+        pass
+    tulis_log("Client selesai dijalankan.")
 
 if __name__ == "__main__":
     main()
