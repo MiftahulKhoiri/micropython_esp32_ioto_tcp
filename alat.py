@@ -2,6 +2,8 @@ from machine import Pin
 from time import sleep
 from wifi import *
 import _thread
+import urandom
+
 
 # Set pin lampu sesuai hardware (misal D2 = GPIO2)
 LAMP_PIN = 2
@@ -43,6 +45,23 @@ def led_lambat():
         sleep(0.5)
         lampu.on()
         sleep(0.5)
+
+
+def led_acak():
+    global berkedip
+    print("LED berkedip acak")
+    while berkedip:
+        lampu.off()
+        sleep(urandom.uniform(0.05, 0.5))
+        lampu.on()
+        sleep(urandom.uniform(0.05, 0.5))
+
+
+
+def lampu_led_acak():
+    global berkedip
+    berkedip = True
+    _thread.start_new_thread(led_acak, ())
 
 def lampu_led_cepat():
     global berkedip
