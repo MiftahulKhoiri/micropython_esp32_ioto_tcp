@@ -65,13 +65,27 @@ def main():
     port = input_port()
     s = koneksi_ke_server(ip, port)
 
+    # Daftar pilihan menu yang valid, ubah sesuai kebutuhan
+    pilihan_valid = [str(i) for i in range(0, 9)]  # 0-8
+
     while True:
         clear_screen()
         try:
             menu = s.recv(1024).decode()
             print(menu)
             tulis_log(f"Menu diterima:\n{menu}")
-            pilihan = input("Masukkan pilihan nomor: ").strip()
+
+            # Validasi input pilihan
+            while True:
+                pilihan = input("Masukkan pilihan nomor: ").strip()
+                if not pilihan.isdigit():
+                    print("Pilihan harus berupa angka! Silakan coba lagi.")
+                    continue
+                if pilihan not in pilihan_valid:
+                    print("Pilihan tidak tersedia! Silakan coba lagi.")
+                    continue
+                break  # input valid
+
             s.sendall(pilihan.encode())
             tulis_log(f"Pilihan dikirim: {pilihan}")
             balasan = s.recv(1024).decode()
