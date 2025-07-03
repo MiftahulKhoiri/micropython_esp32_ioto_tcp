@@ -7,13 +7,15 @@ def get_menu():
         "2. Nyalakan lampu\n"
         "3. Kedip cepat\n"
         "4. Kedip lambat\n"
-        "5. Shutdown ESP32\n"
+        "5. Kedip acak\n"
+        "6. Kedip Morse SOS\n"
+        "7. Kedip gradual\n"
+        "8. Shutdown ESP32\n"
         "0. Keluar\n"
         "Pilih nomor: "
     )
 
 def proses_pilihan(pilihan, alat):
-    # alat adalah modul/fungsi yang diimport dari alat.py
     if pilihan == '1':
         alat.matikan_lampu()
         return 'Lampu dimatikan\n'
@@ -27,6 +29,15 @@ def proses_pilihan(pilihan, alat):
         alat.lampu_led_lambat()
         return 'Lampu berkedip lambat\n'
     elif pilihan == '5':
+        alat.lampu_led_acak()
+        return 'Lampu berkedip acak\n'
+    elif pilihan == '6':
+        alat.lampu_led_morse_sos()
+        return 'Lampu berkedip Morse SOS\n'
+    elif pilihan == '7':
+        alat.lampu_led_gradual()
+        return 'Lampu berkedip gradual\n'
+    elif pilihan == '8':
         alat.mati()
         return 'ESP32 akan dimatikan.\n'
     elif pilihan == '0':
