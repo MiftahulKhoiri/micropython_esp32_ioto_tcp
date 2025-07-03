@@ -54,9 +54,3 @@ def lampu_led_lambat():
     berkedip = True
     _thread.start_new_thread(led_lambat, ())
 
-# Contoh penggunaan:
-# mulai_kedip_cepat()      # Mulai LED berkedip cepat
-# sleep(5)                 # Biarkan berjalan 5 detik
-# matikan_lampu()          # Hentikan kedipan dan matikan lampu
-
-# kamu juga bisa menjalankan fungsi lain tanpa terganggu proses kedip LED
