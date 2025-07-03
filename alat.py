@@ -68,6 +68,21 @@ def led_morse_sos():
             sleep(0.1)
         sleep(1)  # jeda antarkode
 
+def led_gradual():
+    global berkedip
+    print("LED berkedip gradual")
+    while berkedip:
+        for t in [0.5, 0.4, 0.3, 0.2, 0.1, 0.2, 0.3, 0.4]:
+            lampu.off()
+            sleep(t)
+            lampu.on()
+            sleep(t)
+
+def lampu_led_gradual():
+    global berkedip
+    berkedip = True
+    _thread.start_new_thread(led_gradual, ())
+
 def lampu_led_morse_sos():
     global berkedip
     berkedip = True
