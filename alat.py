@@ -4,7 +4,6 @@ from wifi import *
 import _thread
 import urandom
 
-
 # Set pin lampu sesuai hardware (misal D2 = GPIO2)
 LAMP_PIN = 2
 lampu = Pin(LAMP_PIN, Pin.OUT)
