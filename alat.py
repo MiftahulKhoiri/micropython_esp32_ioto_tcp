@@ -56,7 +56,22 @@ def led_acak():
         lampu.on()
         sleep(urandom.uniform(0.05, 0.5))
 
+def led_morse_sos():
+    global berkedip
+    print("LED berkedip Morse SOS")
+    morse = [0.1,0.1,0.1,0.3,0.3,0.3,0.1,0.1,0.1]
+    while berkedip:
+        for t in morse:
+            lampu.off()
+            sleep(t)
+            lampu.on()
+            sleep(0.1)
+        sleep(1)  # jeda antarkode
 
+def lampu_led_morse_sos():
+    global berkedip
+    berkedip = True
+    _thread.start_new_thread(led_morse_sos, ())
 
 def lampu_led_acak():
     global berkedip
