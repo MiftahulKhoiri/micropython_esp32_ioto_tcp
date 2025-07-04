@@ -79,26 +79,31 @@ def led_gradual():
 
 def lampu_led_gradual():
     global berkedip
+    berkedip = False
     berkedip = True
     _thread.start_new_thread(led_gradual, ())
 
 def lampu_led_morse_sos():
     global berkedip
+    berkedip = False
     berkedip = True
     _thread.start_new_thread(led_morse_sos, ())
 
 def lampu_led_acak():
     global berkedip
+    berkedip = False
     berkedip = True
     _thread.start_new_thread(led_acak, ())
 
 def lampu_led_cepat():
     global berkedip
+    berkedip = False
     berkedip = True
     _thread.start_new_thread(led_cepat, ())
 
 def lampu_led_lambat():
     global berkedip
+    berkedip = False
     berkedip = True
     _thread.start_new_thread(led_lambat, ())
 
